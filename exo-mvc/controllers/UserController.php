@@ -1,4 +1,7 @@
 <?php
+
+require 'AbstractController.php';
+require 'managers/UserManager.php';
 /*UserController
 Votre class UserController doit hériter d'AbstractController et contiendra :
 
