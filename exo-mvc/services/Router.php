@@ -1,6 +1,6 @@
 <?php
 
-require 'UserController.php';
+require 'controllers/UserController.php';
 
 class Router {
     private UserController $uC;

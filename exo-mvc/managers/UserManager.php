@@ -1,7 +1,7 @@
 <?php
 
 require 'AbstractManager.php';
-require 'models/User.php'
+require 'models/User.php';
 
 class UserManager extends AbstractManager
 {
@@ -16,9 +16,19 @@ class UserManager extends AbstractManager
 
     public function getAllUsers() : array
     {
+        $usersTab = [];
+
         $query = $this->db->prepare('SELECT * FROM users');
         $query->execute();
-        $user = $query->fetchAll(PDO::FETCH_ASSOC);
+        $users = $query->fetchAll(PDO::FETCH_ASSOC);
+        foreach($users as $user)
+        {
+            $userToPush = new User($user["email"], $user["username"], $user["password"])
+            $userToPush->setId($user["id"]);
+            $usersTab[] = $userToPush;
+        }
+
+        return $usersTab
     }
 
     public function getUserById(int $id) : User
@@ -72,7 +82,8 @@ class UserManager extends AbstractManager
     }
 
     public function editUser(User $user) : void
-        $query = $this->db->prepare('UPDATE users SET email = :email, username = :username,  password = :password WHERE id = :id ')
+    {
+        $query = $this->db->prepare('UPDATE users SET email = :email, username = :username,  password = :password WHERE id = :id ');
         $parameters = [
             'id' = $user->getId(),
             'email' = $user->getEmail(),
@@ -81,6 +92,7 @@ class UserManager extends AbstractManager
             ];
 
         $query->execute($parameters);
+    }
 
 }
 
